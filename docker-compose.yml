@@ -1,20 +1,21 @@
 services:
   web:
     build: ./django
-    container_name: django_petshop
     volumes:
       - ./django:/app
-      - ./django/media:/app/media # adiciona o volume para mídia
     ports:
       - "8000:8000"
     environment:
-      POSTGRES_DB: petshopdb
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_HOST: db
-      POSTGRES_PORT: 5432
-      DJANGO_SECRET_KEY: django-insecure-dev-key-change-in-production
-      DJANGO_DEBUG: "True"
+      # O Docker vai pegar o valor direto do ambiente (Codespaces Secrets)
+      - POSTGRES_DB=${SUPABASE_DB_NAME}
+      - POSTGRES_USER=${SUPABASE_DB_USER}
+      - POSTGRES_PASSWORD=${SUPABASE_DB_PASSWORD}
+      - POSTGRES_HOST=${SUPABASE_DB_HOST}
+      - POSTGRES_PORT=6543
+      - DJANGO_DEBUG=True
+    # REMOVA OU COMENTE AS LINHAS ABAIXO:
+    # env_file:
+    #   - .env 
     depends_on:
       - db
 

@@ -32,3 +32,9 @@ local_settings.py
 
 # Outros
 *.bak
+
+.env
+__pycache__/
+*.py[cod]
+media/
+db.sqlite3

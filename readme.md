@@ -2,6 +2,8 @@
 
 Sistema desenvolvido em Django para gerenciamento de usuários e pets, incluindo autenticação local e via Google OAuth2.
 
+## Para a integração do Supabase, LEIA_SUPABASE.txt na raiz do projeto
+
 ## 🚀 Funcionalidades
 
 ### 👥 Autenticação de Usuários

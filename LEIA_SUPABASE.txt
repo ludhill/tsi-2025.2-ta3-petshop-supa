@@ -1,0 +1,47 @@
+=========================================================
+GUIA DE INTEGRAÇÃO: DJANGO + SUPABASE (TRANSACTION POOLER)
+=========================================================
+
+Este projeto utiliza o Supabase como banco de dados PostgreSQL na nuvem.
+Para que a conexão funcione corretamente via Docker/Codespaces, siga as 
+instruções abaixo.
+
+1. ENDEREÇO DE CONEXÃO (CONNECTION POOLER)
+------------------------------------------
+Devido a restrições de rede em ambientes de containers (IPv6), utilizamos 
+obrigatoriamente o "Transaction Pooler" do Supabase na porta 6543.
+
+2. VARIÁVEIS DE AMBIENTE NECESSÁRIAS
+------------------------------------
+Configure as variáveis abaixo nos "Secrets" do seu GitHub Codespaces ou 
+em um arquivo .env local (não versionado):
+
+SUPABASE_DB_HOST=aws-1-sa-east-1.pooler.supabase.com
+SUPABASE_DB_PORT=6543
+SUPABASE_DB_NAME=postgres
+SUPABASE_DB_USER=postgres.wckvjisumpwrkcnjkakg
+SUPABASE_DB_PASSWORD=[SUA_SENHA_DO_BANCO_DEFINIDA_NO_SUPABASE]
+
+* NOTA: O usuário DEVE conter o ponto seguido do ID do projeto para 
+  funcionar com o Pooler do Supabase.
+
+3. COMO O PROJETO CONSOME ESSES DADOS
+-------------------------------------
+- docker-compose.yml: Mapeia estas variáveis para o container 'web'.
+- settings.py: Utiliza 'os.getenv' para configurar o dicionário DATABASES.
+- entrypoint.sh: Executa o 'python manage.py migrate' automaticamente 
+  ao iniciar o container, garantindo a sincronização das tabelas.
+
+4. COMANDOS DE MANUTENÇÃO
+-------------------------
+Caso precise forçar a atualização das tabelas no Supabase manualmente:
+> docker-compose exec web python manage.py migrate
+
+Para verificar se as variáveis foram carregadas no container:
+> docker-compose exec web printenv | grep POSTGRES
+
+5. SEGURANÇA
+------------
+Nunca comite senhas reais no código. Utilize sempre o gerenciador de 
+Secrets do repositório.
+=========================================================
